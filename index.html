@@ -22,7 +22,7 @@
             padding: 10px;
             border-radius: 5px;
             font-family: monospace;
-            white-space: pre;
+            white-space: pre-wrap; /* Ensure newlines are preserved */
             overflow-x: auto;
         }
         h1 {
@@ -31,39 +31,71 @@
         p {
             margin-bottom: 20px;
         }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
-<h1>Live Code Formatter</h1>
+<div id="app">
+    <h1>Live Code Formatter</h1>
 
-<p>This simple web app allows you to format code with proper indentation in real-time. Whether you're dealing with Python, JavaScript, or any other code, you can paste it into the text area, and the app will automatically preserve line breaks and adjust tab spacing for readability.</p>
+    <p>This simple web app allows you to format code with proper indentation in real-time. Whether you're dealing with Python, JavaScript, or any other code, you can paste it into the text area, and the app will automatically preserve line breaks and adjust tab spacing for readability.</p>
 
-<p>Features:</p>
-<ul>
-    <li>Real-time formatting as you type or paste your code.</li>
-    <li>Replaces tabs with 4 spaces to maintain consistency in indentation.</li>
-    <li>Supports any code that relies on indentation or line breaks.</li>
-    <li>Simple and clean user interface with a focus on usability.</li>
-</ul>
+    <p>Features:</p>
+    <ul>
+        <li>Real-time formatting as you type or paste your code.</li>
+        <li>Replaces tabs with 4 spaces to maintain consistency in indentation.</li>
+        <li>Converts literal <code>\n</code> sequences into actual newlines.</li>
+        <li>Supports any code that relies on indentation or line breaks.</li>
+        <li>Simple and clean user interface with a focus on usability.</li>
+    </ul>
 
-<p>Paste your code in the text area below and see the formatted version live:</p>
+    <p>Paste your code in the text area below and see the formatted version live:</p>
 
-<textarea id="inputText" placeholder="Enter your code here..."></textarea>
+    <textarea v-model="inputText" placeholder="Enter your code here..."></textarea>
 
-<h3>Formatted Code:</h3>
-<pre id="outputText"></pre>
+    <h3>Formatted Code:</h3>
+    <pre>{{ formattedText }}</pre>
+    <button @click="copyToClipboard">Copy to Clipboard</button>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script>
-    const inputText = document.getElementById('inputText');
-    const outputText = document.getElementById('outputText');
-
-    inputText.addEventListener('input', () => {
-        // Replace newlines and tabs to properly format the code
-        const formattedText = inputText.value
-            .replace(/\n/g, '\n')
-            .replace(/\t/g, '    '); // Replace tabs with 4 spaces for consistency
-        outputText.textContent = formattedText;
+    new Vue({
+        el: '#app',
+        data: {
+            inputText: ''
+        },
+        computed: {
+            formattedText() {
+                return this.inputText
+                    .replace(/\\n/g, '\n')  // Convert literal '\n' to actual newline
+                    .replace(/\t/g, '    '); // Replace tabs with 4 spaces
+            }
+        },
+        methods: {
+            copyToClipboard() {
+                navigator.clipboard.writeText(this.formattedText)
+                    .then(() => {
+                        alert('Formatted code copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                    });
+            }
+        }
     });
 </script>
 
