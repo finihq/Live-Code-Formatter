@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Code Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Live Code Formatter</h1>
+
+<p>This simple web app allows you to format code with proper indentation in real-time. Whether you're dealing with Python, JavaScript, or any other code, you can paste it into the text area, and the app will automatically preserve line breaks and adjust tab spacing for readability.</p>
+
+<p>Features:</p>
+<ul>
+    <li>Real-time formatting as you type or paste your code.</li>
+    <li>Replaces tabs with 4 spaces to maintain consistency in indentation.</li>
+    <li>Supports any code that relies on indentation or line breaks.</li>
+    <li>Simple and clean user interface with a focus on usability.</li>
+</ul>
+
+<p>Paste your code in the text area below and see the formatted version live:</p>
+
+<textarea id="inputText" placeholder="Enter your code here..."></textarea>
+
+<h3>Formatted Code:</h3>
+<pre id="outputText"></pre>
+
+<script>
+    const inputText = document.getElementById('inputText');
+    const outputText = document.getElementById('outputText');
+
+    inputText.addEventListener('input', () => {
+        // Replace newlines and tabs to properly format the code
+        const formattedText = inputText.value
+            .replace(/\n/g, '\n')
+            .replace(/\t/g, '    '); // Replace tabs with 4 spaces for consistency
+        outputText.textContent = formattedText;
+    });
+</script>
+
+</body>
+</html>
