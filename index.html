@@ -89,7 +89,6 @@
             copyToClipboard() {
                 navigator.clipboard.writeText(this.formattedText)
                     .then(() => {
-                        alert('Formatted code copied to clipboard!');
                     })
                     .catch(err => {
                         console.error('Failed to copy text: ', err);
